@@ -10,75 +10,64 @@ public class Tests {
     }
     @BeforeClass
     public static void beforeClass() {
-        System.out.println("Before CalculatorTest.class");
+        System.out.println("Before Test.class");
     }
 
     @AfterClass
     public  static void afterClass() {
-        System.out.println("After CalculatorTest.class");
+        System.out.println("After Test.class");
     }
 
-    @Before
-    public void initTest() {
-        Rational standard = new Rational();
-    }
+//    @Before
+//    public void initTest() {
+//        Rational standard = new Rational();
+//    }
 
-    @After
-    public void afterTest() {
-        standard = null;
-    }
+//    @After
+//    public void afterTest() {
+//        standard = null;
+//    }
     @Test
     public void testIntConstructor(){
-        Rational standard = new Rational();
-        assertEquals("Standard constructor returns wrong numerator", 0, standard.getNumerator());
-        assertEquals("Standard constructor returns wrong denominator", 1, standard.getDenominator());
+        assertEquals("fractions are abbreviated incorrectly", new Rational(-1,2), new Rational(5, -10));
+//        assertNull("Int Constructor was executed incorrectly", new Rational(0,0));
+        assertEquals("Int Constructor was executed incorrectly", new Rational(0,1), new Rational(1, Integer.MIN_VALUE));
     }
     @Test
-    public void testEquals(){
-
-    }
-    @Test
-    public void testLess(){
-
-    }
-    @Test
-    public void testLessOrEquals(){
-
+    public void testComparisonOperators(){
+        Rational standard = new Rational(5, -10);
+        assertTrue("Comparison operator \"equals\" was executed incorrectly", standard.equals(new Rational(-1, 2)));
+        assertTrue("Comparison operator \"less\" was executed incorrectly", standard.less(new Rational(-2, 3)));
+        assertTrue("Comparison operator \"lessOrEqual\" was executed incorrectly", standard.lessOrEqual(new Rational(-2, 3)));
     }
     @Test
     public void testPlus(){
-        Rational standard = new Rational(5, 7);
-        Rational standard2 = new Rational(5, 3);
-        assertEquals("Operation \"plus\" was executed incorrectly", new Rational(50,21), standard.plus(standard2));
+        Rational summand = new Rational(5, 7);
+        Rational addend = new Rational(5, 3);
+        assertEquals("Operation \"plus\" was executed incorrectly", new Rational(50,21), summand.plus(addend));
+        summand = new Rational(2147483647, 1);
+        addend = new Rational(1, 1);
+//        aseert на исключение - уточнить
     }
     @Test
     public void testMultiply(){
-        Rational standard = new Rational(5, 7);
-        Rational standard2 = new Rational(-6, 8);
-        assertEquals("Operation \"multiply\" was executed incorrectly", new Rational(-30,56), standard.multiply(standard2));
+        Rational multiplicanda = new Rational(5, 7);
+        Rational multiplier = new Rational(6, -8);
+        assertEquals("Operation \"multiply\" was executed incorrectly", new Rational(-30,56), multiplicanda.multiply(multiplier));
+        multiplicanda = new Rational(42000, 7);
+        multiplier = new Rational(52000, 8);
+//        aseert на исключение
     }
     @Test
     public void testMinus(){
-        Rational standard = new Rational(5, 3);
-        Rational standard2 = new Rational(5, 7);
-        assertEquals("Operation \"minus\" was executed incorrectly", new Rational(20,21), standard.minus(standard2));
+        Rational minuend = new Rational(5, 3);
+        Rational subtrahend = new Rational(5, 7);
+        assertEquals("Operation \"minus\" was executed incorrectly", new Rational(20,21), minuend.minus(subtrahend));
     }
     @Test
     public void testDivide(){
-        Rational standard = new Rational(5, 7);
-        Rational standard2 = new Rational(6, 8);
-        assertEquals("Divide returns wrong answer", new Rational(40,42), standard.divide(standard2));
-    }
-    @Test
-    public void testReduce(){
-
-    }
-    @Test
-    public void testGetGCD(){
-
-    }
-    @Test
-    public void testSimplifyMinuses(){
-
+        Rational dividend = new Rational(5, 7);
+        Rational divisor = new Rational(6, 8);
+        assertEquals("Divide returns wrong answer", new Rational(40,42), dividend.divide(divisor));
     }
 }
