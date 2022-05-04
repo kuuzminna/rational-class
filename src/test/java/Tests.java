@@ -18,60 +18,84 @@ public class Tests {
         System.out.println("After Test.class");
     }
 
-//    @Before
-//    public void initTest() {
-//        Rational standard = new Rational();
-//    }
-
-//    @After
-//    public void afterTest() {
-//        standard = null;
-//    }
     @Test
     public void testIntConstructor(){
-        assertEquals("fractions are abbreviated incorrectly", new Rational(-1,2), new Rational(5, -10));
-//        assertNull("Int Constructor was executed incorrectly", new Rational(0,0));
-        assertEquals("Int Constructor was executed incorrectly", new Rational(0,1), new Rational(1, Integer.MIN_VALUE));
+        assertEquals("Int Constructor was executed incorrectly", new Rational(-1,2), new Rational(5, -10)); // перенос минуса и сокращение
+        assertEquals("Int Constructor was executed incorrectly", new Rational(1,2), new Rational(-5, -10));
+        assertEquals("Int Constructor was executed incorrectly", new Rational(0,1), new Rational(1, Integer.MIN_VALUE)); // переполнение
     }
     @Test
     public void testComparisonOperators(){
         Rational operand = new Rational(5, -10);
+
         assertTrue("Comparison operator \"equals\" was executed incorrectly", operand.equals(new Rational(-1, 2)));
         assertFalse("Comparison operator \"less\" was executed incorrectly with negative numbers", operand.less(new Rational(-2, 3)));
         assertTrue("Comparison operator \"less\" was executed incorrectly", operand.less(new Rational(1, 4)));
         assertTrue("Comparison operator \"less\" was executed incorrectly with negative numbers", operand.less(new Rational(-1, 4)));
-        //равен самому себе
         assertTrue("Comparison operator \"lessOrEqual\" was executed incorrectly", operand.lessOrEqual(new Rational(1, 4)));
         assertFalse("Comparison operator \"lessOrEqual\" was executed incorrectly", operand.lessOrEqual(new Rational(-1, 3)));
     }
     @Test
     public void testPlus(){
-        Rational summand = new Rational(5, 7);
-        Rational addend = new Rational(5, 3);
-        assertEquals("Operation \"plus\" was executed incorrectly", new Rational(50,21), summand.plus(addend));
+        Rational summand = new Rational(5, 3);
+
+        assertEquals("Operation \"plus\" was executed incorrectly with positive numbers",
+                new Rational(50,21), summand.plus(new Rational(5, 7)));
+        assertEquals("Operation \"plus\" was executed incorrectly with positive and negative numbers",
+                new Rational(20,21), summand.plus(new Rational(-5, 7)));
+
+        summand = new Rational(-5, 3);
+        assertEquals("Operation \"plus\" was executed incorrectly with negative numbers",
+                new Rational(-50,21), summand.plus(new Rational(-5, 7)));
         summand = new Rational(2147483647, 1);
-        addend = new Rational(1, 1);
-//        aseert на переполнение - уточнить
+//        overflow
+//        summand = new Rational(Integer.MAX_VALUE, 7);
+//        assertEquals("int overflow is not handled", summand, summand.plus(new Rational(1, 7)));
     }
     @Test
     public void testMultiply(){
         Rational multiplicanda = new Rational(5, 7);
         Rational multiplier = new Rational(6, -8);
         assertEquals("Operation \"multiply\" was executed incorrectly", new Rational(-30,56), multiplicanda.multiply(multiplier));
-        multiplicanda = new Rational(42000, 7);
-        multiplier = new Rational(52000, 8);
-//        aseert на переполнение
+
+        // overflow
+//        multiplicanda = new Rational(42000, 1);
+//        multiplier = new Rational(52000, 1);
+//        assertEquals("int overflow is not handled", multiplicanda, multiplicanda.multiply(multiplier));
     }
     @Test
     public void testMinus(){
         Rational minuend = new Rational(5, 3);
         Rational subtrahend = new Rational(5, 7);
         assertEquals("Operation \"minus\" was executed incorrectly", new Rational(20,21), minuend.minus(subtrahend));
+
+        minuend = new Rational(-5, 3);
+        subtrahend = new Rational(5, 7);
+        assertEquals("Operation \"minus\" was executed incorrectly", new Rational(-50,21), minuend.minus(subtrahend));
+
+        minuend = new Rational(-5, 7);
+        subtrahend = new Rational(-5, 3);
+        assertEquals("Operation \"minus\" was executed incorrectly with negative numbers", new Rational(20,21), minuend.minus(subtrahend));
+
+//        overflow
+//        minuend = new Rational(Integer.MIN_VALUE, 7);
+//        assertEquals("int overflow is not handled", minuend, minuend.minus(new Rational(1, 7)));
     }
     @Test
     public void testDivide(){
         Rational dividend = new Rational(5, 7);
-        Rational divisor = new Rational(6, 8);
-        assertEquals("Divide returns wrong answer", new Rational(40,42), dividend.divide(divisor));
+        Rational divisor = new Rational(6, -8);
+        assertEquals("Divide returns wrong answer", new Rational(-40,42), dividend.divide(divisor));
+        // overflow
+//        dividend = new Rational(42000, 1);
+//        divisor = new Rational(1, 52000);
+//        assertEquals("int overflow is not handled", dividend, dividend.divide(divisor));
+    }
+    @Test(expected = ArithmeticException.class)
+    public void testZeroCheck(){
+        assertNull("The constructor is executed incorrectly with 0 in the denominator", new Rational(0,0));
+
+        Rational dividend = new Rational(5, 7);
+        assertEquals("Division by zero does not work correctly",dividend, dividend.divide(new Rational(0, 8)));
     }
 }
