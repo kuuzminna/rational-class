@@ -35,10 +35,14 @@ public class Tests {
     }
     @Test
     public void testComparisonOperators(){
-        Rational standard = new Rational(5, -10);
-        assertTrue("Comparison operator \"equals\" was executed incorrectly", standard.equals(new Rational(-1, 2)));
-        assertTrue("Comparison operator \"less\" was executed incorrectly", standard.less(new Rational(-2, 3)));
-        assertTrue("Comparison operator \"lessOrEqual\" was executed incorrectly", standard.lessOrEqual(new Rational(-2, 3)));
+        Rational operand = new Rational(5, -10);
+        assertTrue("Comparison operator \"equals\" was executed incorrectly", operand.equals(new Rational(-1, 2)));
+        assertFalse("Comparison operator \"less\" was executed incorrectly with negative numbers", operand.less(new Rational(-2, 3)));
+        assertTrue("Comparison operator \"less\" was executed incorrectly", operand.less(new Rational(1, 4)));
+        assertTrue("Comparison operator \"less\" was executed incorrectly with negative numbers", operand.less(new Rational(-1, 4)));
+        //равен самому себе
+        assertTrue("Comparison operator \"lessOrEqual\" was executed incorrectly", operand.lessOrEqual(new Rational(1, 4)));
+        assertFalse("Comparison operator \"lessOrEqual\" was executed incorrectly", operand.lessOrEqual(new Rational(-1, 3)));
     }
     @Test
     public void testPlus(){
@@ -47,7 +51,7 @@ public class Tests {
         assertEquals("Operation \"plus\" was executed incorrectly", new Rational(50,21), summand.plus(addend));
         summand = new Rational(2147483647, 1);
         addend = new Rational(1, 1);
-//        aseert на исключение - уточнить
+//        aseert на переполнение - уточнить
     }
     @Test
     public void testMultiply(){
@@ -56,7 +60,7 @@ public class Tests {
         assertEquals("Operation \"multiply\" was executed incorrectly", new Rational(-30,56), multiplicanda.multiply(multiplier));
         multiplicanda = new Rational(42000, 7);
         multiplier = new Rational(52000, 8);
-//        aseert на исключение
+//        aseert на переполнение
     }
     @Test
     public void testMinus(){
