@@ -20,9 +20,9 @@ public class Tests {
 
     @Test
     public void testIntConstructor(){
-        assertEquals("Int Constructor was executed incorrectly", new Rational(-1,2), new Rational(5, -10)); // перенос минуса и сокращение
+        assertEquals("Int Constructor was executed incorrectly", new Rational(-1,2), new Rational(5, -10));
         assertEquals("Int Constructor was executed incorrectly", new Rational(1,2), new Rational(-5, -10));
-        assertEquals("Int Constructor was executed incorrectly", new Rational(0,1), new Rational(1, Integer.MIN_VALUE)); // переполнение
+        assertEquals("Int Constructor was executed incorrectly", new Rational(0,1), new Rational(1, Integer.MIN_VALUE));
     }
     @Test
     public void testComparisonOperators(){
@@ -47,7 +47,7 @@ public class Tests {
         summand = new Rational(-5, 3);
         assertEquals("Operation \"plus\" was executed incorrectly with negative numbers",
                 new Rational(-50,21), summand.plus(new Rational(-5, 7)));
-        summand = new Rational(2147483647, 1);
+
 //        overflow
 //        summand = new Rational(Integer.MAX_VALUE, 7);
 //        assertEquals("int overflow is not handled", summand, summand.plus(new Rational(1, 7)));
